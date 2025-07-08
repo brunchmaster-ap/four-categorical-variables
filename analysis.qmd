@@ -15,6 +15,7 @@ library(tidymodels)
 library(gtsummary)
 library(gt)
 library(broom)
+library(marginaleffects)
 ```
 
 Y∼Multinomial(ρbush,ρclinton,ρperot)
@@ -72,8 +73,32 @@ model_table %>%
 ```
 
 ```{r}
+plot_data <- plot_predictions(fit_nes, by = "sex", type = "prob", draw = FALSE)
+
+ggplot(plot_data, aes(x = sex, y = estimate, fill = group)) +
+  geom_col(position = position_dodge(width = 0.8), color = "black") +
+  geom_errorbar(aes(ymin = estimate - std.error, ymax = estimate + std.error), 
+                position = position_dodge(width = 0.8), width = 0.2) +
+  labs(
+    title = "Predicted Voting Probabilities by Sex",
+    subtitle = "Males are less likely to vote for Clinton and more likely to vote for Perot than females",
+    caption = "Data source: National Election Studies (NES), 1992 Presidential Election",
+    x = "Sex",
+    y = "Predicted Probability of Voting"
+  ) +
+  scale_fill_brewer(palette = "Set2", name = "Candidate") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(size = 12),
+    plot.caption = element_text(size = 8, face = "italic"),
+    axis.title = element_text(face = "bold")
+  )
+```
+
+```{r}
 #| label: model
 #| cache: true
 ```
 
-Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices. However, our model may be limited by unmeasured factors that affect both sex and voting choice, potentially biasing the results. We model voter choice as a multinomial function of sex to estimate how gender relates to support for each candidate.
+Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices. However, our model may be limited by unmeasured factors that affect both sex and voting choice, potentially biasing the results. We model voter choice as a multinomial function of sex to estimate how gender relates to support for each candidate. The model estimates that males have about a 10% lower probability of voting for Clinton compared to females, with a 95% confidence interval reflecting the uncertainty around this difference.
