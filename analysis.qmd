@@ -11,7 +11,22 @@ execute:
 #| message: false
 library(tidyverse)
 library(primer.data)
+library(tidymodels)
+library(gtsummary)
 ```
+
+Y∼Multinomial(ρbush,ρclinton,ρperot)
+
+\[
+Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \epsilon
+\]
+
+\[
+\begin{cases}
+\hat{Y}_{Clinton} = 0.4554 - 0.2554 \times \text{sexMale} \\
+\hat{Y}_{Perot} = -0.8519 + 0.4202 \times \text{sexMale}
+\end{cases}
+\]
 
 ```{r}
 nes_92 <- nes |> 
@@ -23,6 +38,12 @@ nes_92 <- nes |>
     pres_vote == "Republican" ~ "Bush",
     pres_vote == "Third Party" ~ "Perot",
   )))
+  
+```
+
+```{r}
+#| label: model
+#| cache: true
 ```
 
 Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices. However, our model may be limited by unmeasured factors that affect both sex and voting choice, potentially biasing the results.
