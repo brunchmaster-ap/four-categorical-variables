@@ -13,6 +13,8 @@ library(tidyverse)
 library(primer.data)
 library(tidymodels)
 library(gtsummary)
+library(gt)
+library(broom)
 ```
 
 Y∼Multinomial(ρbush,ρclinton,ρperot)
@@ -42,8 +44,36 @@ nes_92 <- nes |>
 ```
 
 ```{r}
+# Get tidy output with conf intervals
+model_tidy <- tidy(fit_nes, conf.int = TRUE)
+
+# Select only columns you want
+model_table <- model_tidy %>%
+  select(y.level, term, estimate, conf.low, conf.high)
+
+# Make a nice table
+model_table %>%
+  gt() %>%
+  tab_header(
+    title = "Multinomial Regression Estimates",
+    subtitle = "Estimated Coefficients with 95% Confidence Intervals"
+  ) %>%
+  cols_label(
+    y.level = "Candidate",
+    term = "Term",
+    estimate = "Estimate",
+    conf.low = "Lower 95% CI",
+    conf.high = "Upper 95% CI"
+  ) %>%
+  fmt_number(
+    columns = c(estimate, conf.low, conf.high),
+    decimals = 3
+  )
+```
+
+```{r}
 #| label: model
 #| cache: true
 ```
 
-Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices. However, our model may be limited by unmeasured factors that affect both sex and voting choice, potentially biasing the results.
+Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices. However, our model may be limited by unmeasured factors that affect both sex and voting choice, potentially biasing the results. We model voter choice as a multinomial function of sex to estimate how gender relates to support for each candidate.
