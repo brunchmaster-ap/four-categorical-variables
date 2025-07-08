@@ -1,0 +1,6 @@
+---
+title: "Four-Categorical-Variables"
+author: Ansh Patel
+format: html
+---
+
