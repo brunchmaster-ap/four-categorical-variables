@@ -2,5 +2,27 @@
 title: "Four-Categorical-Variables"
 author: Ansh Patel
 format: html
+execute: 
+  echo: false
 ---
 
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(primer.data)
+```
+
+```{r}
+nes_92 <- nes |> 
+  filter(year == 1992) |> 
+  select(sex, pres_vote) |> 
+  drop_na() |> 
+  mutate(pres_vote = as.factor(case_when(
+    pres_vote == "Democrat" ~ "Clinton",
+    pres_vote == "Republican" ~ "Bush",
+    pres_vote == "Third Party" ~ "Perot",
+  )))
+```
+
+Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices.
