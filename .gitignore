@@ -1,2 +1,5 @@
 *Rproj
 *_cache
+
+/.quarto/
+rsconnect
