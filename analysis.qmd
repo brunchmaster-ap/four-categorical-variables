@@ -25,4 +25,4 @@ nes_92 <- nes |>
   )))
 ```
 
-Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices.
+Voting behavior is influenced by many factors, including demographic characteristics like sex. This analysis uses data from the 1992 National Election Study, which surveyed over 2,000 U.S. voters to examine how sex relates to presidential voting choices. However, our model may be limited by unmeasured factors that affect both sex and voting choice, potentially biasing the results.
